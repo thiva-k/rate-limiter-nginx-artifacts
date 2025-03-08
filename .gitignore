@@ -1,0 +1,9 @@
+/jmeter/cloud/logs/**/fixed_window_counter
+/jmeter/cloud/logs/**/gcra
+/jmeter/cloud/logs/**/leaky_bucket
+/jmeter/cloud/logs/**/sliding_window_counter
+/jmeter/cloud/logs/**/sliding_window_logs
+/jmeter/cloud/logs/**/token_bucket
+/jmeter/cloud/logs/**/base
+/jmeter/apache-jmeter-5.6.3
+locations.conf

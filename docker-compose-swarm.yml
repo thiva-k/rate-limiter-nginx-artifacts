@@ -1,0 +1,147 @@
+version: '3.8'
+
+services:
+  load_balancer1:
+    image: us-central1-docker.pkg.dev/triple-throttlers-446213/nginx/nginx:latest
+    ports:
+      - target: 8080
+        published: 8090
+        protocol: tcp
+        mode: host
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == loadbalancer1
+
+  load_balancer2:
+    image: us-central1-docker.pkg.dev/triple-throttlers-446213/nginx/nginx:latest
+    ports:
+      - target: 8080
+        published: 8091
+        protocol: tcp
+        mode: host
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == loadbalancer2
+
+  redis:
+    image: redis/redis-stack:latest
+    ports:
+      - target: 6379
+        published: 6379
+        protocol: tcp
+        mode: host
+      - target: 8001
+        published: 8001
+        protocol: tcp
+        mode: host
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == database
+
+  mysql:
+    image: us-central1-docker.pkg.dev/triple-throttlers-446213/nginx/mysql:latest
+    ports:
+      - target: 3306
+        published: 3307
+        protocol: tcp
+        mode: host
+    command: --mysql-native-password=ON
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: rate_limit_db
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == database
+
+  db:
+    image: descartesresearch/teastore-db
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+        mode: host
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+  registry:
+    image: descartesresearch/teastore-registry
+    ports:
+      - target: 8080
+        published: 8083
+        protocol: tcp
+        mode: host
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+  persistence:
+    image: descartesresearch/teastore-persistence
+    environment:
+      HOST_NAME: "persistence"
+      REGISTRY_HOST: "registry"
+      DB_HOST: "db"
+      DB_PORT: "3306"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+  auth:
+    image: descartesresearch/teastore-auth
+    environment:
+      HOST_NAME: "auth"
+      REGISTRY_HOST: "registry"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+  image:
+    image: descartesresearch/teastore-image
+    environment:
+      HOST_NAME: "image"
+      REGISTRY_HOST: "registry"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+  recommender:
+    image: descartesresearch/teastore-recommender
+    environment:
+      HOST_NAME: "recommender"
+      REGISTRY_HOST: "registry"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+  webui:
+    image: descartesresearch/teastore-webui
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+    environment:
+      HOST_NAME: "webui"
+      REGISTRY_HOST: "registry"
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type == teastore
+
+volumes:
+  mysql_data:
+
+networks:
+  default:
+    driver: overlay
+    name: teastore-network

@@ -1,0 +1,23 @@
+Algorithm,Database,Version,Config,Average Throughput (req/sec),Average Latency (ms),Avg Error Rate
+base,,,,75.67048691023567,265.9758181738096,4.551638140555948
+fixed_window_counter,crdt,script,rate_limit_100_window_size_60,75.7418440898296,267.4120844060114,2.219912403210752
+fixed_window_counter,mysql,script,rate_limit_100_window_size_60,75.72992548668643,273.4785651408451,2.188982282482041
+fixed_window_counter,redis,script,rate_limit_100_window_size_60,75.72639174742316,268.7440360915493,2.139321289989916
+fixed_window_counter,redis,async,rate_limit_100_window_size_60_batch_percent_0.5,75.71744996308377,267.5895093658515,2.2657108447343326
+gcra,crdt,script,period_60_rate_100_burst_5,75.7664140051791,267.05458388963063,2.0908457971665784
+gcra,mysql,script,period_60_rate_100_burst_5,75.66487389187685,273.7196193748761,2.126597873529041
+gcra,redis,script,period_60_rate_100_burst_5,75.70403754866926,268.8356230735359,2.143741893381032
+sliding_window_counter,crdt,script,rate_limit_100_window_size_60_sub_window_count_5,75.69752985604437,268.07251992426575,0.5767183083073807
+sliding_window_counter,mysql,script,rate_limit_100_window_size_60_sub_window_count_5,75.7177023524804,274.4276155048315,0.5755568881767344
+sliding_window_counter,redis,script,rate_limit_100_window_size_60_sub_window_count_5,75.66567492561941,273.3417261432725,0.5692037035158996
+sliding_window_counter,redis,script,rate_limit_100_window_size_60_sub_window_count_2,75.78545287282763,267.72588732022695,0.7230102338466814
+sliding_window_counter,redis,async,rate_limit_100_window_size_60_sub_window_count_5_batch_percent_0.5,75.71656661344568,268.0925359336136,1.520699175016424
+sliding_window_logs,crdt,script,rate_limit_100_window_size_60,75.7934067618938,266.5917016645045,0.0124636939749099
+sliding_window_logs,mysql,script,rate_limit_100_window_size_60,75.71212393923032,274.6034118423949,0.0205113308082416
+sliding_window_logs,redis,script,rate_limit_100_window_size_60,75.80648655675195,267.0189065007585,0.0133312304357325
+sliding_window_logs,redis,async,rate_limit_100_window_size_60_batch_percent_0.5,75.76426746486361,267.74533655961284,0.0195796694585241
+token_bucket,crdt,script,bucket_capacity_5_refill_rate_1.67,75.76775199948003,267.1519917295383,2.0926032681775184
+token_bucket,mysql,script,bucket_capacity_5_refill_rate_1.67,75.66027956154137,274.9765623279071,2.0013768260035625
+token_bucket,redis,script,bucket_capacity_5_refill_rate_1.67,75.79939268488612,267.29256172907367,2.102063704034318
+token_bucket,redis,async,bucket_capacity_5_refill_rate_1.67_batch_percent_0.5,75.78537892689464,267.6826548789338,2.436677015936362
+token_bucket,redis,async,bucket_capacity_100_refill_rate_1.67_batch_percent_0.5,75.73967258249185,266.4501166219249,3.4233324946678167
